@@ -1,5 +1,5 @@
-from flask import Flask, request
-from flask_restful import Resource, Api
+from flask import request
+from flask_restful import Resource
 import os
 import sys
 sys.path.append(os.path.realpath('..')) #Change the dir to import my modules. It will not work, otherwise
@@ -21,6 +21,9 @@ class Switches(Resource):
     def post(self):
         rows = request.get_json()
         switch_model.insert_several_db(rows)
+
+    def delete(self):
+        switch_model.delete_all()
 
 class Switch(Resource):
 

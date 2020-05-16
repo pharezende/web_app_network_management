@@ -3,6 +3,7 @@ import json
 
 ALL_post = False
 ALL_get = False
+ALL_delete = False
 
 Single_post = False
 Single_get = False
@@ -38,6 +39,13 @@ if ALL_post:
 #GET
 if ALL_get:
     req = urllib.request.Request(address_all, method='GET')
+    req.add_header('Content-Type', 'application/json; charset=utf-8')
+    response = urllib.request.urlopen(req)
+    print(json.loads(response.read()))
+
+#DELETE
+if ALL_delete:
+    req = urllib.request.Request(address_all, method='DELETE')
     req.add_header('Content-Type', 'application/json; charset=utf-8')
     response = urllib.request.urlopen(req)
     print(json.loads(response.read()))

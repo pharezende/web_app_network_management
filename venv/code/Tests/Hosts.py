@@ -5,32 +5,30 @@ ALL_post = False
 ALL_get = False
 ALL_delete = False
 
-Single_post = True
+Single_post = False
 Single_get = False
-Single_delete = False
+Single_delete = True
+
 
 print("#####ALL#####")
 
 #All
-address_all = "http://127.0.0.1:5000/routers/all/"
+address_all = "http://127.0.0.1:5000/hosts/all/"
 
 #POST
 if ALL_post:
     body_post = [
         {
-            "name": "R1",
-            "numberOfInterfaces": 48,
-            "manufacturer": "Cisco"
+            "name": "H1",
+            "numberOfInterfaces": 1
         },
         {
-            "name": "R2",
-            "numberOfInterfaces": 24,
-            "manufacturer": "Juniper"
+            "name": "H2",
+            "numberOfInterfaces": 3
         },
         {
-            "name": "R3",
-            "numberOfInterfaces": 24,
-            "manufacturer": "Cisco"
+            "name": "H3",
+            "numberOfInterfaces": 2
         }
     ]
 
@@ -56,7 +54,7 @@ if ALL_delete:
 
 
 #Single
-address_single = "http://127.0.0.1:5000/routers/single/"
+address_single = "http://127.0.0.1:5000/hosts/single/"
 
 
 print("#####SINGLE#####")
@@ -64,9 +62,8 @@ print("#####SINGLE#####")
 #POST
 if Single_post:
     body_post = {
-        "name": "R4",
-        "numberOfInterfaces": 24,
-        "manufacturer": "Cisco"
+        "name": "H5",
+        "numberOfInterfaces": 1,
     }
     req = urllib.request.Request(address_single)
     req.add_header('Content-Type', 'application/json; charset=utf-8')
@@ -79,7 +76,7 @@ if Single_post:
 if Single_get:
 
     body_get = {
-        "name": "R4"
+        "name": "H5"
     }
 
     req = urllib.request.Request(address_single, method='GET')
@@ -88,12 +85,12 @@ if Single_get:
     jsondataasbytes = jsondata.encode('utf-8')  # needs to be bytes
     req.add_header('Content-Length', len(jsondataasbytes))
     response = urllib.request.urlopen(req, jsondataasbytes)
-    print(response.read())
+    print(json.loads(response.read()))
 
 #DELETE
 if Single_delete:
     body_delete = {
-        "name": "R2"
+        "name": "H5"
     }
 
     req = urllib.request.Request(address_single, method='DELETE')
@@ -102,4 +99,3 @@ if Single_delete:
     jsondataasbytes = jsondata.encode('utf-8')  # needs to be bytes
     req.add_header('Content-Length', len(jsondataasbytes))
     response = urllib.request.urlopen(req, jsondataasbytes)
-

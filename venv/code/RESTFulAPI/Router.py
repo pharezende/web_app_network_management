@@ -22,6 +22,10 @@ class Routers(Resource):
         rows = request.get_json()
         router_model.insert_several_db(rows)
 
+    def delete(self):
+        router_model.delete_all()
+
+
 
 class Router(Resource):
 

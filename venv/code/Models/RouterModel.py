@@ -38,9 +38,6 @@ class RouterModel():
         self.db = DB()
         self.populate_objects()
 
-    def get_file_name(self):
-        return self.file_name
-
     def get_router_hash_map(self):
         return self.routers_hash_map
 
@@ -51,21 +48,25 @@ class RouterModel():
             self.routers_hash_map[router.get_id()] = router
 
     def insert_db(self, row):
-        rows = self.db.query_db(self.file_name)
-        row['id'] = self.hash_function(row['name'])
+        rows = []
+        row['id'] = self.hash_function(row[self.get_attribute_for_matching()])
         router = Router(row['name'], row['numberOfInterfaces'], row['manufacturer'], row['id'])
         self.routers_hash_map[router.get_id()] = router
-        rows.append(row)
+        for key in self.routers_hash_map:
+            row = self.routers_hash_map[key]
+            rows.append(row.get_json())
         self.db.update_db(self.file_name, rows)
 
     def insert_several_db(self, rows):
-        rows_db = self.db.query_db(self.file_name)
+        rows_to_insert_in_db = []
         for row in rows:
-            row['id'] = self.hash_function(row['name'])
+            row['id'] = self.hash_function(row[self.get_attribute_for_matching()])
             router = Router(row['name'], row['numberOfInterfaces'], row['manufacturer'], row['id'])
             self.routers_hash_map[router.get_id()] = router
-            rows_db.append(row)
-        self.db.update_db(self.file_name, rows_db)
+        for key in self.routers_hash_map:
+            value = self.routers_hash_map[key]
+            rows_to_insert_in_db.append(value.get_json())
+        self.db.update_db(self.file_name, rows_to_insert_in_db)
 
     def delete_row_db(self, id):
         del self.routers_hash_map[id]
@@ -76,6 +77,11 @@ class RouterModel():
                 json_data = rows[key_row].get_json()
                 json_list.append(json_data)
             json.dump(json_list, json_file, indent=4)
+
+    def delete_all(self):
+        self.routers_hash_map.clear()
+        self.db.clear_db(self.file_name)
+
 
     def get_attribute_for_matching(self):
         return 'name'

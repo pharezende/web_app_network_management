@@ -6,6 +6,12 @@
         "id": 1604
     },
     {
+        "name": "R2",
+        "numberOfInterfaces": 24,
+        "manufacturer": "Juniper",
+        "id": 9814
+    },
+    {
         "name": "R3",
         "numberOfInterfaces": 24,
         "manufacturer": "Cisco",
@@ -13,7 +19,7 @@
     },
     {
         "name": "R4",
-        "numberOfInterfaces": 48,
+        "numberOfInterfaces": 24,
         "manufacturer": "Cisco",
         "id": 3092
     }

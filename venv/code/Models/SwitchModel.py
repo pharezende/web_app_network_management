@@ -37,9 +37,6 @@ class SwitchModel():
         self.db = DB()
         self.set_switches_hash_map()
 
-    def get_file_name(self):
-        return self.file_name
-
     def get_switches_hash_map(self):
         return self.switches_hash_map
 
@@ -50,22 +47,26 @@ class SwitchModel():
             self.switches_hash_map[switch.get_id()] = switch
 
 
-    def insert_several_db(self, rows):
-        rows_db = self.db.query_db(self.file_name)
-        for row in rows:
-            row['id'] = self.hash_function(row['name'])
-            switch = Switch(row['name'], row['numberOfInterfaces'], row['manufacturer'], row['id'])
-            self.switches_hash_map[switch.get_id()] = switch
-            rows_db.append(row)
-        self.db.update_db(self.file_name, rows_db)
-
     def insert_db(self, row):
-        rows = self.db.query_db(self.file_name)
-        row['id'] = self.hash_function(row['name'])
+        rows = []
+        row['id'] = self.hash_function(row[self.get_attribute_for_matching()])
         switch = Switch(row['name'], row['numberOfInterfaces'], row['manufacturer'], row['id'])
         self.switches_hash_map[switch.get_id()] = switch
-        rows.append(row)
+        for key in self.switches_hash_map:
+            row = self.switches_hash_map[key]
+            rows.append(row.get_json())
         self.db.update_db(self.file_name, rows)
+
+    def insert_several_db(self, rows):
+        rows_to_insert_in_db = []
+        for row in rows:
+            row['id'] = self.hash_function(row[self.get_attribute_for_matching()])
+            switch = Switch(row['name'], row['numberOfInterfaces'], row['manufacturer'], row['id'])
+            self.switches_hash_map[switch.get_id()] = switch
+        for key in self.switches_hash_map:
+            value = self.switches_hash_map[key]
+            rows_to_insert_in_db.append(value.get_json())
+        self.db.update_db(self.file_name, rows_to_insert_in_db)
 
     def delete_row_db(self, id):
         del self.switches_hash_map[id]
@@ -79,6 +80,10 @@ class SwitchModel():
 
     def get_attribute_for_matching(self):
         return 'name'
+
+    def delete_all(self):
+        self.switches_hash_map.clear()
+        self.db.clear_db(self.file_name)
 
     def hash_function(self, name):
         return hash(name) % 10000
