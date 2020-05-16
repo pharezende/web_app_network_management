@@ -1,0 +1,17 @@
+[
+    {
+        "name": "R1",
+        "numberOfInterfaces": 48,
+        "manufacturer": "Cisco"
+    },
+    {
+        "name": "R2",
+        "numberOfInterfaces": 24,
+        "manufacturer": "Juniper"
+    },
+    {
+        "name": "R3",
+        "numberOfInterfaces": 24,
+        "manufacturer": "Cisco"
+    }
+]
