@@ -1,9 +1,10 @@
 from flask import Flask, request
 from flask_restful import Resource, Api
 import json
-from Router import *
-from Switch import *
-from Host import *
+from RouterRestAPI import *
+from SwitchRestAPI import *
+from HostRestAPI import *
+from LinkRestAPI import *
 
 if __name__ == '__main__':
 
@@ -19,5 +20,8 @@ if __name__ == '__main__':
     #Hosts API
     api.add_resource(Host, '/hosts/single/')
     api.add_resource(Hosts, '/hosts/all/')
+    #Links API
+    api.add_resource(Link, '/links/single/')
+    api.add_resource(Links, '/links/all/')
 
     app.run(debug=True)
