@@ -32,8 +32,20 @@ class HostModel:
         self.db = DB()
         self.set_hosts_hash_map()
 
-    def get_hosts_hash_map(self):
-        return self.hosts_hash_map
+    def get_row(self, object):
+        key = object[self.get_attribute_for_matching()]
+        id = self.hash_function(key)
+        if id in self.hosts_hash_map:
+            return self.hosts_hash_map[id].get_json()
+        return "Row not found"
+
+    def get_rows(self):
+        rows = []
+        for key in self.hosts_hash_map:
+            #Return to the Client the way I want
+            row = self.hosts_hash_map[key]
+            rows.append(row.get_json())
+        return rows
 
     def set_hosts_hash_map(self):
         rows = self.db.query_db(self.file_name)
@@ -41,19 +53,19 @@ class HostModel:
             host = Host(row['name'], row['numberOfInterfaces'], row['id'])
             self.hosts_hash_map[host.get_id()] = host
 
-    def insert_row_in_db(self, row):
+    def insert_row_in_db(self, object):
         rows = []
-        row['id'] = self.hash_function(row[self.get_attribute_for_matching()])
-        host = Host(row['name'], row['numberOfInterfaces'], row['id'])
+        object['id'] = self.hash_function(object[self.get_attribute_for_matching()])
+        host = Host(object['name'], object['numberOfInterfaces'], object['id'])
         self.hosts_hash_map[host.get_id()] = host
         for key in self.hosts_hash_map:
             row = self.hosts_hash_map[key]
             rows.append(row.get_json())
         self.db.update_db(self.file_name, rows)
 
-    def insert_rows_in_db(self, rows):
+    def insert_rows_in_db(self, objects):
         rows_to_insert_in_db = []
-        for row in rows:
+        for row in objects:
             row['id'] = self.hash_function(row[self.get_attribute_for_matching()])
             host = Host(row['name'], row['numberOfInterfaces'], row['id'])
             self.hosts_hash_map[host.get_id()] = host
@@ -63,7 +75,9 @@ class HostModel:
         self.db.update_db(self.file_name, rows_to_insert_in_db)
 
 
-    def delete_row_db(self, id):
+    def delete_row_db(self, object):
+        key = object[self.get_attribute_for_matching()]
+        id = self.hash_function(key)
         del self.hosts_hash_map[id]
         rows = self.hosts_hash_map
         with open(self.file_name, 'w') as json_file:

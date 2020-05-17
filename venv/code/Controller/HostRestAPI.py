@@ -11,15 +11,11 @@ os.environ["PYTHONHASHSEED"] = "0"
 class Hosts(Resource):
 
     def get(self):
-        rows = []
-        for key in hosts_hash_map:
-            row = hosts_hash_map[key]
-            rows.append(row.get_json())
-        return rows
+        return host_model.get_rows()
 
     def post(self):
-        rows = request.get_json()
-        host_model.insert_rows_in_db(rows)
+        objects = request.get_json()
+        host_model.insert_rows_in_db(objects)
 
     def delete(self):
         host_model.delete_all()
@@ -27,32 +23,17 @@ class Hosts(Resource):
 class Host(Resource):
 
     def get(self):
-        row = request.get_json()
-        attribute = host_model.get_attribute_for_matching()
-        value = row[attribute]
-        identifier = host_model.hash_function(value)
-        if identifier in hosts_hash_map:
-            host = hosts_hash_map[identifier]
-            return host.get_json()
-        else:
-            return "Invalid Name"
+        object = request.get_json()
+        return host_model.get_row(object)
 
     def post(self):
-        row = request.get_json()
-        host_model.insert_row_in_db(row)
+        object = request.get_json()
+        host_model.insert_row_in_db(object)
 
     def delete(self):
-        row = request.get_json()
-        attribute = host_model.get_attribute_for_matching()
-        value = row[attribute]
-        identifier = host_model.hash_function(value)
-        if identifier in hosts_hash_map:
-            host_model.delete_row_db(identifier)
-            return "OK!"
-        else:
-            return "Invalid Name"
+        object = request.get_json()
+        host_model.delete_row_db(object)
 
 host_model = HostModel()
-hosts_hash_map = host_model.get_hosts_hash_map()
 
 

@@ -11,12 +11,7 @@ os.environ["PYTHONHASHSEED"] = "0"
 class Switches(Resource):
 
     def get(self):
-        rows = []
-        for key in switches_hash_map:
-            # Return to the Client the way I want
-            row = switches_hash_map[key]
-            rows.append(row.get_json())
-        return rows
+        return switch_model.get_rows()
 
     def post(self):
         rows = request.get_json()
@@ -28,34 +23,19 @@ class Switches(Resource):
 class Switch(Resource):
 
     def get(self):
-        row = request.get_json()
-        attribute = switch_model.get_attribute_for_matching()
-        value = row[attribute]
-        identifier = switch_model.hash_function(value)
-        if identifier in switches_hash_map:
-            switch = switches_hash_map[identifier]
-            return switch.get_json()
-        else:
-            return "Invalid Name"
+        object = request.get_json()
+        return switch_model.get_row(object)
 
     def post(self):
         row = request.get_json()
         switch_model.insert_db(row)
 
     def delete(self):
-        row = request.get_json()
-        attribute = switch_model.get_attribute_for_matching()
-        value = row[attribute]
-        identifier = switch_model.hash_function(value)
-        if identifier in switches_hash_map:
-            switch_model.delete_row_db(identifier)
-            return "OK!"
-        else:
-            return "Invalid Name"
+        object = request.get_json()
+        switch_model.delete_row_db(object)
 
 
 switch_model = SwitchModel()
-switches_hash_map = switch_model.get_switches_hash_map()
 
 
 

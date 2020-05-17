@@ -1,12 +1,12 @@
 import urllib.request
 import json
 
-ALL_post = False
-ALL_get = False
-ALL_delete = False
+ALL_post = True
+ALL_get = True
+ALL_delete = True
 
-Single_post = False
-Single_get = False
+Single_post = True
+Single_get = True
 Single_delete = True
 
 

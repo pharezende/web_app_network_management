@@ -37,8 +37,20 @@ class SwitchModel():
         self.db = DB()
         self.set_switches_hash_map()
 
-    def get_switches_hash_map(self):
-        return self.switches_hash_map
+    def get_row(self, object):
+        key = object[self.get_attribute_for_matching()]
+        id = self.hash_function(key)
+        if id in self.switches_hash_map:
+            return self.switches_hash_map[id].get_json()
+        return "Row not found"
+
+    def get_rows(self):
+        rows = []
+        for key in self.switches_hash_map:
+            row = self.switches_hash_map[key]
+            rows.append(row.get_json())
+        return rows
+
 
     def set_switches_hash_map(self):
         rows = self.db.query_db(self.file_name)
@@ -47,19 +59,19 @@ class SwitchModel():
             self.switches_hash_map[switch.get_id()] = switch
 
 
-    def insert_db(self, row):
+    def insert_db(self, object):
         rows = []
-        row['id'] = self.hash_function(row[self.get_attribute_for_matching()])
-        switch = Switch(row['name'], row['numberOfInterfaces'], row['manufacturer'], row['id'])
+        object['id'] = self.hash_function(object[self.get_attribute_for_matching()])
+        switch = Switch(object['name'], object['numberOfInterfaces'], object['manufacturer'], object['id'])
         self.switches_hash_map[switch.get_id()] = switch
         for key in self.switches_hash_map:
             row = self.switches_hash_map[key]
             rows.append(row.get_json())
         self.db.update_db(self.file_name, rows)
 
-    def insert_several_db(self, rows):
+    def insert_several_db(self, objects):
         rows_to_insert_in_db = []
-        for row in rows:
+        for row in objects:
             row['id'] = self.hash_function(row[self.get_attribute_for_matching()])
             switch = Switch(row['name'], row['numberOfInterfaces'], row['manufacturer'], row['id'])
             self.switches_hash_map[switch.get_id()] = switch
@@ -68,7 +80,9 @@ class SwitchModel():
             rows_to_insert_in_db.append(value.get_json())
         self.db.update_db(self.file_name, rows_to_insert_in_db)
 
-    def delete_row_db(self, id):
+    def delete_row_db(self, object):
+        key = object[self.get_attribute_for_matching()]
+        id = self.hash_function(key)
         del self.switches_hash_map[id]
         rows = self.switches_hash_map
         with open(self.file_name, 'w') as json_file:

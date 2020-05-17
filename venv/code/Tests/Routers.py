@@ -1,13 +1,13 @@
 import urllib.request
 import json
 
-ALL_post = False
+ALL_post = True
 ALL_get = False
 ALL_delete = False
 
-Single_post = True
+Single_post = False
 Single_get = False
-Single_delete = False
+Single_delete = True
 
 print("#####ALL#####")
 
@@ -88,7 +88,7 @@ if Single_get:
     jsondataasbytes = jsondata.encode('utf-8')  # needs to be bytes
     req.add_header('Content-Length', len(jsondataasbytes))
     response = urllib.request.urlopen(req, jsondataasbytes)
-    print(response.read())
+    print(json.loads(response.read()))
 
 #DELETE
 if Single_delete:

@@ -15,8 +15,8 @@ class Links(Resource):
         return result
 
     def post(self):
-        rows = request.get_json()
-        result = link_model.insert_several_rows_in_db(rows)
+        objects = request.get_json()
+        result = link_model.insert_several_rows_in_db(objects)
         return result
 
     def delete(self):
@@ -26,17 +26,17 @@ class Links(Resource):
 class Link(Resource):
 
     def get(self):
-        row = request.get_json()
-        result = link_model.get_row(row)
+        object = request.get_json()
+        result = link_model.get_row(object)
         return result
 
     def post(self):
-        row = request.get_json()
-        return link_model.insert_row_in_db(row)
+        object = request.get_json()
+        return link_model.insert_row_in_db(object)
 
     def delete(self):
-        row = request.get_json()
-        result = link_model.delete_row(row)
+        object = request.get_json()
+        result = link_model.delete_row(object)
         return result
 
 link_model = LinkModel()

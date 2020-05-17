@@ -11,16 +11,12 @@ os.environ["PYTHONHASHSEED"] = "0"
 class Routers(Resource):
 
     def get(self):
-        rows = []
-        for key in routers_hash_map:
-            #Return to the Client the way I want
-            row = routers_hash_map[key]
-            rows.append(row.get_json())
-        return rows
+        result = router_model.get_rows()
+        return result
 
     def post(self):
-        rows = request.get_json()
-        router_model.insert_several_db(rows)
+        objects = request.get_json()
+        router_model.insert_several_db(objects)
 
     def delete(self):
         router_model.delete_all()
@@ -30,32 +26,18 @@ class Routers(Resource):
 class Router(Resource):
 
     def get(self):
-        row = request.get_json()
-        attribute = router_model.get_attribute_for_matching()
-        value = row[attribute]
-        identifier = router_model.hash_function(value)
-        if identifier in routers_hash_map:
-            router = routers_hash_map[identifier]
-            #Return to the Client the way I want
-            return "Name:" + router.get_name() + ", Number of Interfaces:" + str(router.get_number_interfaces())
-        else:
-            return "Invalid Name"
+        object = request.get_json()
+        result = router_model.get_row(object)
+        return result
 
     def post(self):
         router_row = request.get_json()
         router_model.insert_db(router_row)
 
     def delete(self):
-        row = request.get_json()
-        attribute = router_model.get_attribute_for_matching()
-        value = row[attribute]
-        identifier = router_model.hash_function(value)
-        if identifier in routers_hash_map:
-            router_model.delete_row_db(identifier)
-            return "OK!"
-        else:
-            return "Invalid Name"
+        object = request.get_json()
+        result = router_model.delete_row_db(object)
+        return result
 
 router_model = RouterModel()
-routers_hash_map = router_model.get_router_hash_map()
 

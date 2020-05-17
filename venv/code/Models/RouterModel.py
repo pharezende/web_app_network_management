@@ -38,6 +38,20 @@ class RouterModel():
         self.db = DB()
         self.populate_objects()
 
+    def get_row(self, object):
+        key = object[self.get_attribute_for_matching()]
+        id = self.hash_function(key)
+        if id in self.routers_hash_map:
+            return self.routers_hash_map[id].get_json()
+        return "Row not found"
+
+    def get_rows(self):
+        rows = []
+        for key in self.routers_hash_map:
+            row = self.routers_hash_map[key]
+            rows.append(row.get_json())
+        return rows
+
     def get_router_hash_map(self):
         return self.routers_hash_map
 
@@ -47,19 +61,19 @@ class RouterModel():
             router = Router(row['name'], row['numberOfInterfaces'], row['manufacturer'], row['id'])
             self.routers_hash_map[router.get_id()] = router
 
-    def insert_db(self, row):
+    def insert_db(self, object):
         rows = []
-        row['id'] = self.hash_function(row[self.get_attribute_for_matching()])
-        router = Router(row['name'], row['numberOfInterfaces'], row['manufacturer'], row['id'])
+        object['id'] = self.hash_function(object[self.get_attribute_for_matching()])
+        router = Router(object['name'], object['numberOfInterfaces'], object['manufacturer'], object['id'])
         self.routers_hash_map[router.get_id()] = router
         for key in self.routers_hash_map:
             row = self.routers_hash_map[key]
             rows.append(row.get_json())
         self.db.update_db(self.file_name, rows)
 
-    def insert_several_db(self, rows):
+    def insert_several_db(self, objects):
         rows_to_insert_in_db = []
-        for row in rows:
+        for row in objects:
             row['id'] = self.hash_function(row[self.get_attribute_for_matching()])
             router = Router(row['name'], row['numberOfInterfaces'], row['manufacturer'], row['id'])
             self.routers_hash_map[router.get_id()] = router
@@ -68,7 +82,9 @@ class RouterModel():
             rows_to_insert_in_db.append(value.get_json())
         self.db.update_db(self.file_name, rows_to_insert_in_db)
 
-    def delete_row_db(self, id):
+    def delete_row_db(self, object):
+        key = object[self.get_attribute_for_matching()]
+        id = self.hash_function(key)
         del self.routers_hash_map[id]
         rows = self.routers_hash_map
         with open(self.file_name, 'w') as json_file:

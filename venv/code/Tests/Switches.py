@@ -3,11 +3,11 @@ import json
 
 ALL_post = False
 ALL_get = False
-ALL_delete = False
+ALL_delete = True
 
 Single_post = False
 Single_get = False
-Single_delete = True
+Single_delete = False
 
 print("#####ALL#####")
 
