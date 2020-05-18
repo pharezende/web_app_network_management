@@ -5,14 +5,16 @@ from RouterRestAPI import *
 from SwitchRestAPI import *
 from HostRestAPI import *
 from LinkRestAPI import *
+from flask_cors import CORS
 
 if __name__ == '__main__':
 
     app = Flask(__name__)
     api = Api(app)
+    cors = CORS(app)
 
     #Routers API
-    api.add_resource(Router, '/routers/single/')
+    api.add_resource(Router, '/routers/single/', '/routers/single/<value>')
     api.add_resource(Routers, '/routers/all/')
     #Switches API
     api.add_resource(Switch, '/switches/single/')

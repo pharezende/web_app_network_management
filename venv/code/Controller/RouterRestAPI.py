@@ -25,9 +25,8 @@ class Routers(Resource):
 
 class Router(Resource):
 
-    def get(self):
-        object = request.get_json()
-        result = router_model.get_row(object)
+    def get(self, value):
+        result = router_model.get_row(value)
         return result
 
     def post(self):

@@ -38,9 +38,8 @@ class RouterModel():
         self.db = DB()
         self.populate_objects()
 
-    def get_row(self, object):
-        key = object[self.get_attribute_for_matching()]
-        id = self.hash_function(key)
+    def get_row(self, value):
+        id = self.hash_function(value)
         if id in self.routers_hash_map:
             return self.routers_hash_map[id].get_json()
         return "Row not found"
