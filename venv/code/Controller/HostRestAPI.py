@@ -22,9 +22,8 @@ class Hosts(Resource):
 
 class Host(Resource):
 
-    def get(self):
-        object = request.get_json()
-        return host_model.get_row(object)
+    def get(self, value):
+        return host_model.get_row(value)
 
     def post(self):
         object = request.get_json()

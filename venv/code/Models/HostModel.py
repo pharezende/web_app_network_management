@@ -32,9 +32,8 @@ class HostModel:
         self.db = DB()
         self.set_hosts_hash_map()
 
-    def get_row(self, object):
-        key = object[self.get_attribute_for_matching()]
-        id = self.hash_function(key)
+    def get_row(self, value):
+        id = self.hash_function(value)
         if id in self.hosts_hash_map:
             return self.hosts_hash_map[id].get_json()
         return "Row not found"

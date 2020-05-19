@@ -25,9 +25,8 @@ class Links(Resource):
 
 class Link(Resource):
 
-    def get(self):
-        object = request.get_json()
-        result = link_model.get_row(object)
+    def get(self, value_1, value_2):
+        result = link_model.get_row(value_1, value_2)
         return result
 
     def post(self):

@@ -75,9 +75,7 @@ class LinkModel():
         conc = src_name + dst_name
         return hash(conc) % 10000
 
-    def get_row(self, row):
-        src = row['src']
-        dst = row['dst']
+    def get_row(self, src, dst):
         identifier = self.get_id(src, dst)
         if identifier in self.links_hash_map:
             link = self.links_hash_map[identifier]

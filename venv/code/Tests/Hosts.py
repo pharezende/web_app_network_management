@@ -2,12 +2,12 @@ import urllib.request
 import json
 
 ALL_post = True
-ALL_get = True
-ALL_delete = True
+ALL_get = False
+ALL_delete = False
 
-Single_post = True
+Single_post = False
 Single_get = True
-Single_delete = True
+Single_delete = False
 
 
 print("#####ALL#####")
@@ -74,17 +74,10 @@ if Single_post:
 
 #GET
 if Single_get:
-
-    body_get = {
-        "name": "H5"
-    }
+    address_single = "http://127.0.0.1:5000/hosts/single/H2"
 
     req = urllib.request.Request(address_single, method='GET')
-    req.add_header('Content-Type', 'application/json; charset=utf-8')
-    jsondata = json.dumps(body_get)
-    jsondataasbytes = jsondata.encode('utf-8')  # needs to be bytes
-    req.add_header('Content-Length', len(jsondataasbytes))
-    response = urllib.request.urlopen(req, jsondataasbytes)
+    response = urllib.request.urlopen(req)
     print(json.loads(response.read()))
 
 #DELETE

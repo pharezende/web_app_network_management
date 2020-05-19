@@ -30,5 +30,21 @@
         },
         "bandwidth": "100 Mbps",
         "id": 1519
+    },
+    {
+        "src": {
+            "name": "R1",
+            "interface": 2,
+            "ip_address": "10.0.0.1",
+            "mask": 24
+        },
+        "dst": {
+            "name": "H1",
+            "interface": 1,
+            "ip_address": "10.0.0.2",
+            "mask": 24
+        },
+        "bandwidth": "100 Mbps",
+        "id": 5858
     }
 ]

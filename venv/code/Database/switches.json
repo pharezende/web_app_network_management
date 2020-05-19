@@ -1,1 +1,14 @@
-[]
+[
+    {
+        "name": "S1",
+        "numberOfInterfaces": 48,
+        "manufacturer": "Cisco",
+        "id": 6665
+    },
+    {
+        "name": "S2",
+        "numberOfInterfaces": 24,
+        "manufacturer": "Juniper",
+        "id": 2584
+    }
+]

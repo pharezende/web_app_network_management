@@ -22,9 +22,8 @@ class Switches(Resource):
 
 class Switch(Resource):
 
-    def get(self):
-        object = request.get_json()
-        return switch_model.get_row(object)
+    def get(self, value):
+        return switch_model.get_row(value)
 
     def post(self):
         row = request.get_json()
